@@ -13,7 +13,7 @@ int cgiMain()
 	char birth[16] = "\0";
 	char stuId[32] = "\0";
 	char dept[16] = "\0";
-	char sex[2] = "\0";
+	char sex[10] = "\0";
 	char grade[5] ="\0";
 	int status = 0;
 
@@ -47,7 +47,7 @@ int cgiMain()
 		return 1;
 	}
 
-	status = cgiFormString("sex",  sex, 2);
+	status = cgiFormString("sex",  sex, 10);
 	if (status != cgiFormSuccess)
 	{
 		fprintf(cgiOut, "get sex error!\n");
@@ -86,7 +86,7 @@ int cgiMain()
 
 
 
-	strcpy(sql, "CREATE TABLE stu(stuId INT NOT NULL PRIMARY KEY,name VARCHAR(45) NOT NULL,birth INT NOT NULL,dept VARCHAR(45) NOT NULL,sex VARCHAR(45) NOT NULL,grade INT NOT NULL)");
+	strcpy(sql, "CREATE TABLE stu(stuId VARCHAR(45) NOT NULL PRIMARY KEY,name VARCHAR(45) NOT NULL,birth INT NOT NULL,dept VARCHAR(45) NOT NULL,sex VARCHAR(45) NOT NULL,grade INT NOT NULL)");
 	if ((ret = mysql_real_query(db, sql, strlen(sql) + 1)) != 0)
 	{
 		if (ret != 1)
@@ -99,7 +99,7 @@ int cgiMain()
 
 
 
-	sprintf(sql, "insert into stu values(%d, '%s', %d, '%s', '%s', %d)", atoi(stuId), name, atoi(birth),dept,sex,atoi(grade));
+	sprintf(sql, "insert into stu values('%s', '%s', %d, '%s', '%s', %d)", stuId, name, atoi(birth),dept,sex,atoi(grade));
 	if (mysql_real_query(db, sql, strlen(sql) + 1) != 0)
 	{
 		fprintf(cgiOut, "%s\n", mysql_error(db));

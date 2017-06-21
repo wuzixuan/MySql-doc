@@ -11,28 +11,21 @@ int cgiMain()
 
 
 
-	char stuId[32] = "\0";
-	char score[4] = "\0";
+	char cname[20] = "\0";
 	char cno[12] = "\0";
 
 	int status = 0;
 
 
-	status = cgiFormString("stuId",  stuId, 32);
+	status = cgiFormString("cname-add",  cname, 20);
 	if (status != cgiFormSuccess)
 	{
-		fprintf(cgiOut, "get stuId error!\n");
+		fprintf(cgiOut, "get cname error!\n");
 		return 1;
 	}
 
-	status = cgiFormString("score",  score, 4);
-  if (status != cgiFormSuccess)
-  {
- 	 fprintf(cgiOut, "get score error!\n");
- 	 return 1;
-  }
 
-	status = cgiFormString("cno",  cno, 12);
+	status = cgiFormString("cno-add",  cno, 12);
 	if (status != cgiFormSuccess)
 	{
 		fprintf(cgiOut, "get cno error!\n");
@@ -67,7 +60,7 @@ int cgiMain()
 
 
 
-	strcpy(sql,"CREATE TABLE score(stuId VARCHAR(45) NOT NULL,score INT NULL,cno INT NOT NULL )");
+	strcpy(sql,"CREATE TABLE course (cno INT NOT NULL PRIMARY KEY,cname VARCHAR(45) NOT NULL)");
 	if ((ret = mysql_real_query(db, sql, strlen(sql) + 1)) != 0)
 	{
 		if (ret != 1)
@@ -81,7 +74,7 @@ int cgiMain()
 
 
 
-	sprintf(sql,"insert into score  values('%s',%d,%d)",stuId,atoi(score),atoi(cno));
+	sprintf(sql,"insert into course  values(%d,'%s')",atoi(cno),cname);
 	if (mysql_real_query(db, sql, strlen(sql) + 1) != 0)
 	{
 		fprintf(cgiOut, "%s\n", mysql_error(db));
@@ -89,7 +82,7 @@ int cgiMain()
 		return -1;
 	}
 
-	fprintf(cgiOut, "add score ok!\n");
+	fprintf(cgiOut, "add course ok!\n");
 	mysql_close(db);
 	return 0;
 }
