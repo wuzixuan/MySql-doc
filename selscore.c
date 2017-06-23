@@ -39,10 +39,10 @@ while(ch != EOF){
 
 
 	char stuId[32] = "\0";
-	char name[32] = "\0";
+	char cno[32] = "\0";
 	int status = 0;
 
-	status = cgiFormString("sno",  stuId, 32);
+	status = cgiFormString("stuId",  stuId, 32);
 	if (status != cgiFormSuccess)
 	{
 		fprintf(cgiOut, "get stuId error!\n");
@@ -51,10 +51,10 @@ while(ch != EOF){
 
 
 
-	status = cgiFormString("name",  name, 32);
+	status = cgiFormString("cno",  cno, 32);
 	if (status != cgiFormSuccess)
 	{
-		fprintf(cgiOut, "get name error!\n");
+		fprintf(cgiOut, "get cno error!\n");
 		return 1;
 	}
 
@@ -62,7 +62,7 @@ while(ch != EOF){
 	MYSQL *db;
 	char sql[128] = "\0";
 
-sprintf(sql,"select name,stu.stuId,cname,score from stu,score,course where stu.stuId=score.stuId and stu.stuId='%s' and score.stuId='%s' and score.cno=course.cno and score.cno=%d and course.cno=%d",stuId,stuId,atoi(name),atoi(name));
+sprintf(sql,"select name,stu.stuId,cname,score from stu,score,course where stu.stuId=score.stuId and stu.stuId='%s' and score.stuId='%s' and score.cno=course.cno and score.cno=%d and course.cno=%d",stuId,stuId,atoi(cno),atoi(cno));
 
 
 
